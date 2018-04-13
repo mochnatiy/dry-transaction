@@ -46,7 +46,7 @@ RSpec.describe Dry::Transaction::Step do
     end
 
     context "when operation starts" do
-      let(:operation) { proc { |input| Dry::Monads::Result::Right.new(input) } }
+      let(:operation) { proc { |input| Dry::Monads::Result::Success.new(input) } }
 
       it "publishes step" do
         expect(listener).to receive(:on_step).and_call_original
