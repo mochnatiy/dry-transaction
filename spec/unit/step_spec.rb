@@ -34,7 +34,7 @@ RSpec.describe Dry::Transaction::Step do
     context "when operation succeeds" do
       let(:operation) { proc { |input| Dry::Monads::Result::Success.new(input) } }
 
-      it { is_expected.to be_right }
+      it { is_expected.to be_success }
 
       it "publishes step_succeeded" do
         expect(listener).to receive(:on_step_succeeded).and_call_original
@@ -46,7 +46,7 @@ RSpec.describe Dry::Transaction::Step do
     end
 
     context "when operation starts" do
-      let(:operation) { proc { |input| Dry::Monads::Result::Right.new(input) } }
+      let(:operation) { proc { |input| Dry::Monads::Result::Success.new(input) } }
 
       it "publishes step" do
         expect(listener).to receive(:on_step).and_call_original
@@ -60,12 +60,12 @@ RSpec.describe Dry::Transaction::Step do
     context "when operation fails" do
       let(:operation) { proc { |input| Dry::Monads::Result::Failure.new("error") } }
 
-      it { is_expected.to be_left }
+      it { is_expected.to be_failure }
 
       it "wraps value in StepFailure" do
         aggregate_failures do
-          expect(subject.left).to be_a Dry::Transaction::StepFailure
-          expect(subject.left.value).to eq "error"
+          expect(subject.failure).to be_a Dry::Transaction::StepFailure
+          expect(subject.failure.value).to eq "error"
         end
       end
 

@@ -70,14 +70,14 @@ This release makes major changes to the dry-transaction API: transactions are no
 
 ## Added
 
-- Added `Dry::Transaction::Operation` convenience mixin. This gives easy access to `Right` and `Left` result builders within your operation objects, and also enables dry-matcher's block-based result matching API for when the operations are called individually. (timriley in [#58](https://github.com/dry-rb/dry-transaction/pull/58))
+- Added `Dry::Transaction::Operation` convenience mixin. This gives easy access to `Success` and `Failure` result builders within your operation objects, and also enables dry-matcher's block-based result matching API for when the operations are called individually. (timriley in [#58](https://github.com/dry-rb/dry-transaction/pull/58))
 
     ```ruby
     class MyOperation
       include Dry::Transaction::Operation
 
       def call(input)
-        Right(input)
+        Success(input)
       end
     end
 
@@ -143,14 +143,14 @@ This release makes major changes to the dry-transaction API: transactions are no
 
       def process(input)
         input = do_something_with(input)
-        Right(input)
+        Success(input)
       end
 
       def validate(input)
         if input[:email].include?("@")
-          Right(input)
+          Success(input)
         else
-          Left(:not_valid)
+          Failure(:not_valid)
         end
       end
     end
@@ -216,7 +216,7 @@ This release makes major changes to the dry-transaction API: transactions are no
 
 ## Changed
 
-* Use dry-monads (e.g. `Dry::Monads::Either::Right`) instead of kleisli (`Kleisli::Either::Right`) (flash-gordon)
+* Use dry-monads (e.g. `Dry::Monads::Either::Success`) instead of kleisli (`Kleisli::Either::Success`) (flash-gordon)
 
 ## Fixed
 
